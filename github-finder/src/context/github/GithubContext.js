@@ -13,6 +13,8 @@ export const GithubProvider = ({ children }) => {
 
   const initialState = {
     users: [],
+    repos: [],
+    user: {},
     loading: false,
   };
 
@@ -54,11 +56,51 @@ export const GithubProvider = ({ children }) => {
     });
   };
 
+  // Get single User
+  const getUser = async (login) => {
+    setLoading();
+
+    const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    });
+
+    if (response.status === 404) {
+      window.location = "/notfound";
+    } else {
+      const data = await response.json();
+
+      dispatch({
+        type: "GET_USER",
+        payload: data,
+      });
+    }
+  };
+
   // Clear User Search
   const clearSearch = () => {
     dispatch({
       type: "CLEAR_SEARCH",
       payload: [],
+    });
+  };
+
+  // Get User Repos
+  const getRepos = async (login) => {
+    setLoading();
+
+    const response = await fetch(`${GITHUB_URL}/users/${login}/repos`, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    });
+
+    const data = await response.json();
+
+    dispatch({
+      type: "GET_REPOS",
+      payload: data,
     });
   };
 
@@ -70,11 +112,15 @@ export const GithubProvider = ({ children }) => {
       value={{
         users: state.users,
         loading: state.loading,
+        user: state.user,
+        repos: state.repos,
         // users,
         // loading,
         // fetchUsers,
         searchUsers,
         clearSearch,
+        getUser,
+        getRepos,
       }}
     >
       {children}

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-card-image .card.image-full:before {
+  border-radius: 0.5rem;
+  opacity: 0.45;
+}
+.custom-card-image .card-body .card-title {
+  position: absolute;
+  bottom: 17%;
+}
+
+.custom-card-image .card-body p {
+  position: absolute;
+}

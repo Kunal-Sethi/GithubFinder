@@ -4,8 +4,8 @@ import githubReducer from "./GithubReducer";
 
 const GithubContext = createContext();
 
-const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
+// const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
+// const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 export const GithubProvider = ({ children }) => {
   //   const [users, setUsers] = useState([]);
@@ -35,74 +35,74 @@ export const GithubProvider = ({ children }) => {
   //   setLoading(false);
 
   // Search Users
-  const searchUsers = async (text) => {
-    setLoading();
+  // const searchUsers = async (text) => {
+  //   setLoading();
 
-    const params = new URLSearchParams({
-      q: text,
-    });
+  //   const params = new URLSearchParams({
+  //     q: text,
+  //   });
 
-    const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-      },
-    });
+  //   const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
+  //     headers: {
+  //       Authorization: `token ${GITHUB_TOKEN}`,
+  //     },
+  //   });
 
-    const { items } = await response.json();
+  //   const { items } = await response.json();
 
-    dispatch({
-      type: "GET_USERS",
-      payload: items,
-    });
-  };
+  //   dispatch({
+  //     type: "GET_USERS",
+  //     payload: items,
+  //   });
+  // };
 
-  // Get single User
-  const getUser = async (login) => {
-    setLoading();
+  // // Get single User
+  // const getUser = async (login) => {
+  //   setLoading();
 
-    const response = await fetch(`${GITHUB_URL}/users/${login}`, {
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-      },
-    });
+  //   const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+  //     headers: {
+  //       Authorization: `token ${GITHUB_TOKEN}`,
+  //     },
+  //   });
 
-    if (response.status === 404) {
-      window.location = "/notfound";
-    } else {
-      const data = await response.json();
+  //   if (response.status === 404) {
+  //     window.location = "/notfound";
+  //   } else {
+  //     const data = await response.json();
 
-      dispatch({
-        type: "GET_USER",
-        payload: data,
-      });
-    }
-  };
+  //     dispatch({
+  //       type: "GET_USER",
+  //       payload: data,
+  //     });
+  //   }
+  // };
 
-  // Clear User Search
-  const clearSearch = () => {
-    dispatch({
-      type: "CLEAR_SEARCH",
-      payload: [],
-    });
-  };
+  // // Get User Repos
+  // const getRepos = async (login) => {
+  //   setLoading();
 
-  // Get User Repos
-  const getRepos = async (login) => {
-    setLoading();
+  //   const response = await fetch(`${GITHUB_URL}/users/${login}/repos`, {
+  //     headers: {
+  //       Authorization: `token ${GITHUB_TOKEN}`,
+  //     },
+  //   });
 
-    const response = await fetch(`${GITHUB_URL}/users/${login}/repos`, {
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-      },
-    });
+  //   const data = await response.json();
 
-    const data = await response.json();
+  //   dispatch({
+  //     type: "GET_REPOS",
+  //     payload: data,
+  //   });
+  // };
 
-    dispatch({
-      type: "GET_REPOS",
-      payload: data,
-    });
-  };
+  // // Clear User Search
+  // const clearSearch = () => {
+  //   dispatch({
+  //     type: "CLEAR_SEARCH",
+  //     payload: [],
+  //   });
+  // };
 
   // Set Loading
   const setLoading = () => dispatch({ type: "SET_LOADING" });
@@ -110,17 +110,19 @@ export const GithubProvider = ({ children }) => {
   return (
     <GithubContext.Provider
       value={{
+        //we could use ...state here and it will give us the same thing as these 4 lines with state gives
         users: state.users,
         loading: state.loading,
         user: state.user,
         repos: state.repos,
+        dispatch,
         // users,
         // loading,
         // fetchUsers,
-        searchUsers,
-        clearSearch,
-        getUser,
-        getRepos,
+        // searchUsers,
+        // clearSearch,
+        // getUser,
+        // getRepos,
       }}
     >
       {children}
